@@ -10,7 +10,7 @@ public class TabulatedFunction {
         points = new FunctionPoint[pointsCount];
         double step = (rightX - leftX) / (pointsCount - 1);
         for (int i = 0; i < pointsCount; i++) {
-            points[i] = new FunctionPoint(leftX + i * step, 0); // Инициализация точек
+            points[i] = new FunctionPoint(leftX + i * step, 0);
         }
     }
     public TabulatedFunction(double leftX, double rightX, double[] values) {
@@ -124,42 +124,10 @@ public class TabulatedFunction {
         while (index < points.length && points[index].getX() < point.getX()) {
             index++;
         }
-        // Create a new array with increased size
         FunctionPoint[] newPoints = new FunctionPoint[points.length + 1];
-        // Copy elements up to the insertion index
         System.arraycopy(points, 0, newPoints, 0, index);
-        // Insert the new point
         newPoints[index] = new FunctionPoint(point);
-        // Copy the remaining elements
         System.arraycopy(points, index, newPoints, index + 1, points.length - index);
         points = newPoints;
-    }
-    private static class FunctionPoint {
-        private double x;
-        private double y;
-        public FunctionPoint(double x, double y) {
-            this.x = x;
-            this.y = y;
-        }
-        public FunctionPoint(FunctionPoint point) {
-            this.x = point.x;
-            this.y = point.y;
-        }
-        public FunctionPoint() {
-            this.x = 0.0;
-            this.y = 0.0;
-        }
-        public double getX() {
-            return x;
-        }
-        public double getY() {
-            return y;
-        }
-        public void setX(double x) {
-            this.x = x;
-        }
-        public void setY(double y) {
-            this.y = y;
-        }
     }
 }

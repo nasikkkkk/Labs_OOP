@@ -7,11 +7,23 @@ public class FunctionPoint {
         this.y = y;
     }
     public FunctionPoint(FunctionPoint point) {
-        x = point.x;
-        y = point.y;
+        this.x = point.x;
+        this.y = point.y;
     }
     public FunctionPoint() {
-        x = 0;
-        y = 0;
+        this.x = 0.0;
+        this.y = 0.0;
+    }
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
+    public void setX(double x) {
+        this.x = x;
+    }
+    public void setY(double y) {
+        this.y = y;
     }
 }
