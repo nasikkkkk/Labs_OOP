@@ -1,18 +1,8 @@
-<<<<<<< HEAD
 package functions;
 
-public class UnitFunction extends ConstantFunction {
-
-    public UnitFunction() {
-        super(1); 
+public class UnitFunction implements MathFunction {
+    @Override
+    public double apply(double x) {
+        return 1;
     }
-=======
-package functions;
-
-public class UnitFunction extends ConstantFunction {
-
-    public UnitFunction() {
-        super(1); 
-    }
->>>>>>> 4fe543a0c1767e47e0c43da207535ff7652111da
 }
