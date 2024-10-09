@@ -1,7 +1,5 @@
 package functions;
-
 import java.util.Arrays;
-
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
     private double[] xValues;
     private double[] yValues;
@@ -40,7 +38,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             count++;
         }
     }
-
     @Override
     public void remove(int index) {
         if (index == count - 1) {
@@ -62,7 +59,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.yValues = Arrays.copyOf(yValues, yValues.length);
         count = this.xValues.length;
     }
-
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         double[] xValues = new double[count];
         double[] yValues = new double[count];
@@ -96,7 +92,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.yValues = Arrays.copyOf(yValues, yValues.length);
         this.count = this.xValues.length;
     }
-
     @Override
     protected int floorIndexOfX(double x) {
         if (x > xValues[count - 1]) {
@@ -114,7 +109,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return count - 1;
     }
-
     @Override
     protected double extrapolateLeft(double x) {
         if (count == 1) {
@@ -122,7 +116,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return interpolate(x, getX(0), getX(1), getY(0), getY(1));
     }
-
     @Override
     protected double extrapolateRight(double x) {
         if (count == 1) {
@@ -130,7 +123,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return interpolate(x, getX(count - 2), getX(count-1), getY(count - 2), getY(count-1));
     }
-
     @Override
     protected double interpolate(double x, int floorIndex) {
         if (count == 1) {
@@ -138,24 +130,20 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return interpolate(x, getX(floorIndex), getX(floorIndex + 1), getY(floorIndex), getY(floorIndex + 1));
     }
-
     @Override
     public double getX(int index) {
         return xValues[index];
     }
-
     @Override
     public double getY(int index) {
         return yValues[index];
     }
-
     @Override
     public void setY(int index, double value) {
         if (index >= 0 && index < count) {
             yValues[index] = value;
         }
     }
-
     @Override
     public int indexOfX(double x) {
         for (int i = 0; i < count; i++) {
@@ -165,7 +153,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return -1;
     }
-
     @Override
     public int indexOfY(double y) {
         for (int i = 0; i < count; i++) {
@@ -175,15 +162,12 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         return -1;
     }
-
     @Override
     public double leftBound() {
         return xValues[0];
     }
-
     @Override
     public double rightBound() {
         return xValues[count - 1];
     }
-
 }

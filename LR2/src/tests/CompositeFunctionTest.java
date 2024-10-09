@@ -1,13 +1,10 @@
 package tests;
-
 import functions.SimpleIterations;
 import functions.IdentityFunction;
 import functions.CompositeFunction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 class CompositeFunctionTest {
-
     @Test
     void apply() {
         SimpleIterations fun_1 = new SimpleIterations();

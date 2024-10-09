@@ -1,11 +1,8 @@
 package tests;
-
 import functions.SimpleIterations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 class SimpleIterationsTest {
-
     @Test
     void apply() {
         SimpleIterations obj = new SimpleIterations();
