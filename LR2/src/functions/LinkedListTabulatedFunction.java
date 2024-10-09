@@ -1,6 +1,6 @@
 package functions;
 
-public class LinkedListTabulatedFunction {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     private class Node {
         Node next;
         Node prev;
@@ -9,7 +9,6 @@ public class LinkedListTabulatedFunction {
     }
 
     Node head;
-    protected int count;
 
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
         for (int i = 0; i < xValues.length; i++) {
@@ -69,19 +68,17 @@ public class LinkedListTabulatedFunction {
         }
         return temp;
     }
-    //@Override
-    public int getCount(){ return count; }
-    //@Override
+    @Override
     public double leftBound(){ return head.x;}
-    //@Override
+    @Override
     public double rightBound(){return head.prev.x;}
-    //@Override
+    @Override
     public double getX(int index){ return getNode(index).x;}
-    //@Override
+    @Override
     public double getY(int index){ return getNode(index).y;}
-    //@Override
+    @Override
     public void setY(int index, double value){ getNode(index).y = value;}
-    //@Override
+    @Override
     public int indexOfX(double x) {
         for (int i = 0; i < count; i++) {
             if(getNode(i).x == x) {
@@ -91,7 +88,7 @@ public class LinkedListTabulatedFunction {
         return -1;
     }
 
-    //@Override
+    @Override
     public int indexOfY(double y) {
         for (int i = 0; i < count; i++) {
             if(getNode(i).y == y) {
@@ -101,7 +98,7 @@ public class LinkedListTabulatedFunction {
         return -1;
     }
 
-    //@Override
+    @Override
     public int floorIndexOfX(double x){
         if (x > getNode(count - 1).x) return  count - 1;
         if (x < getNode(0).x) return 0;
@@ -114,18 +111,17 @@ public class LinkedListTabulatedFunction {
         }
         return count - 1;
     }
-    /*
-    //@Override
-    private double extrapolateLeft(double x){
+    @Override
+    protected double extrapolateRight(double x) {
         return interpolate(x, getX(0), getX(1), getY(0), getY(1));
     }
-    //@Override
-    private double extrapolateLeft(double x){
+
+    @Override
+    protected double extrapolateLeft(double x){
         return interpolate(x, getX(count-2), getX(count-1), getY(count-2), getY(count-1));
     }
-    //@Override
-    private double interpolate(double x, int floorIndex){
+    @Override
+    protected double interpolate(double x, int floorIndex){
         return interpolate(x, getX(floorIndex-1), getX(floorIndex), getY(floorIndex-1), getY(floorIndex));
     }
-    */
 }
