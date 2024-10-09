@@ -2,10 +2,61 @@ package functions;
 
 import java.util.Arrays;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
     private double[] xValues;
     private double[] yValues;
+    @Override
+    public void insert(double x, double y) {
+        int i = 0;
+        while (getX(i) < x && i < count){
+            i++;
+        }
+        double[] xarr = new double[count + 1];
+        double[] yarr = new double[count + 1];
+        if (getX(i) == x) {
+            setY(i, y);
+        }
+        else if (i < count) {
+            System.arraycopy(xValues, 0, xarr, 0, i);
+            xarr[i] = x;
+            System.arraycopy(xValues, i, xarr, i + 1, count - i);
+            xValues = new double[count + 1];
+            System.arraycopy(xarr, 0, xValues, 0, count + 1);
+            System.arraycopy(yValues, 0, yarr, 0, i);
+            yarr[i] = y;
+            System.arraycopy(yValues, i, yarr, i + 1, count - i);
+            yValues = new double[count + 1];
+            System.arraycopy(yarr, 0, yValues, 0, count + 1);
+            count++;
+        } else {
+            System.arraycopy(xValues, 0, xarr, 0, i);
+            xarr[i] = x;
+            xValues = new double[count + 1];
+            System.arraycopy(xarr, 0, xValues, 0, count + 1);
+            System.arraycopy(yValues, 0, yarr, 0, i);
+            yarr[i] = y;
+            yValues = new double[count + 1];
+            System.arraycopy(yarr, 0, yValues, 0, count + 1);
+            count++;
+        }
+    }
 
+    @Override
+    public void remove(int index) {
+        if (index == count - 1) {
+            count--;
+        } else {
+            double[] xarr = new double[count + 1];
+            double[] yarr = new double[count + 1];
+            System.arraycopy(xValues, 0, xarr, 0, index);
+            System.arraycopy(xValues, 0, yarr, 0, index);
+            System.arraycopy(xValues, index + 1, xarr, index, count - index - 1);
+            System.arraycopy(xValues, index + 1, yarr, index, count - index - 1);
+            count--;
+            System.arraycopy(xarr, 0, xValues, 0, count);
+            System.arraycopy(yarr, 0, xValues, 0, count);
+        }
+    }
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         this.xValues = Arrays.copyOf(xValues, xValues.length);
         this.yValues = Arrays.copyOf(yValues, yValues.length);
