@@ -6,27 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ConcreteArrayTabulatedFunction extends ArrayTabulatedFunction {
-    public ConcreteArrayTabulatedFunction(double[] xValues, double[] yValues) {
-        super(xValues, yValues);
-    }
-
-    @Override
-    protected double interpolate(double x, double x0, double x1, double y0, double y1) {
-        return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
-    }
-
-    @Override
-    public double getY(double index) {
-        return 0;
-    }
-
-    @Override
-    public double getY() {
-        return 0;
-    }
-}
-
 class ArrayTabulatedFunctionTest {
     private ArrayTabulatedFunction function;
 
@@ -34,7 +13,7 @@ class ArrayTabulatedFunctionTest {
     void setUp() {
         double[] xValues = {1.0, 3.0, 5.0};
         double[] yValues = {2.0, 4.0, 6.0};
-        function = new ConcreteArrayTabulatedFunction(xValues, yValues);
+        function = new ArrayTabulatedFunction(xValues, yValues);
     }
 
     // Tests for insert method
@@ -50,9 +29,6 @@ class ArrayTabulatedFunctionTest {
         function.insert(3.0, 5.0);
         Assertions.assertEquals(5.0, function.getY(1), 1e-6);
     }
-
-
-
 
 
     // Tests for floorIndexOfX method
@@ -74,7 +50,7 @@ class ArrayTabulatedFunctionTest {
     // Tests for extrapolateLeft method
     @Test
     void testExtrapolateLeftSinglePoint() {
-        ArrayTabulatedFunction singlePointFunction = new ConcreteArrayTabulatedFunction(new double[]{2.0}, new double[]{3.0});
+        ArrayTabulatedFunction singlePointFunction = new ArrayTabulatedFunction(new double[]{2.0}, new double[]{3.0});
         Assertions.assertEquals(3.0, singlePointFunction.extrapolateLeft(1.5), 1e-6);
     }
 
@@ -87,7 +63,7 @@ class ArrayTabulatedFunctionTest {
     // Tests for extrapolateRight method
     @Test
     void testExtrapolateRightSinglePoint() {
-        ArrayTabulatedFunction singlePointFunction = new ConcreteArrayTabulatedFunction(new double[]{2.0}, new double[]{3.0});
+        ArrayTabulatedFunction singlePointFunction = new ArrayTabulatedFunction(new double[]{2.0}, new double[]{3.0});
         Assertions.assertEquals(3.0, singlePointFunction.extrapolateRight(2.5), 1e-6);
     }
 
