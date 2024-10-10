@@ -1,11 +1,8 @@
 package tests;
-
 import functions.ZeroFunction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 class ZeroFunctionTest {
-
     @Test
     void apply() {
         ZeroFunction test = new ZeroFunction();

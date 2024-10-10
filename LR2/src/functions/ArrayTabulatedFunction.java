@@ -2,7 +2,7 @@ package functions;
 
 import java.util.Arrays;
 
-public abstract class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
     private double[] xValues;
     private double[] yValues;
     @Override
@@ -116,7 +116,7 @@ public abstract class ArrayTabulatedFunction extends AbstractTabulatedFunction i
     }
 
     @Override
-    public double extrapolateLeft(double x) {
+     public double extrapolateLeft(double x) {
         if (count == 1) {
             return getY(0);
         }

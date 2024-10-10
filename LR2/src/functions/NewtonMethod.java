@@ -1,20 +1,39 @@
 package functions;
 
-//Y- метод Ньютона
 public class NewtonMethod implements MathFunction {
-    private MathFunction fx;
-    private MathFunction dfx;
-    public NewtonMethod(MathFunction fx, MathFunction dfx){
-        this.fx = fx;
-        this.dfx = dfx;
+    // Приватные поля для функции и ее производной
+    private final MathFunction function;     // f(x)
+    private final MathFunction derivative;   // f'(x)
+
+    // Конструктор, принимающий два объекта типа MathFunction
+    public NewtonMethod(MathFunction function, MathFunction derivative) {
+        this.function = function;
+        this.derivative = derivative;
     }
+
+    // Публичный метод для нахождения корня уравнения методом Ньютона
     @Override
     public double apply(double x) {
-        double x1  = x - fx.apply(x) / dfx.apply(x); // первое приближение
-        while (Math.abs(x1 - x) > 0.000001) { // пока не достигнута точность 0.000001
-            x = x1;
-            x1 = x - fx.apply(x) / dfx.apply(x); // последующие приближения
+        return findRoot(x);
+    }
+
+    // Приватный метод для выполнения одной итерации метода Ньютона
+    private double iterate(double x) {
+        return x - function.apply(x) / derivative.apply(x);
+    }
+
+    // Приватный метод для выполнения полной процедуры поиска корня
+    private double findRoot(double x) {
+        final double tolerance = 1e-6; // Точность вычислений
+        final int maxIterations = 1000; // Максимальное количество итераций
+        int iterations = 0;
+        while (Math.abs(function.apply(x)) > tolerance && iterations < maxIterations) {
+            x = iterate(x);
+            iterations++;
         }
-        return x1;
+        if (iterations == maxIterations) {
+            throw new RuntimeException("Достигнуто максимальное количество итераций");
+        }
+        return x;
     }
 }

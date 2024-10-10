@@ -1,6 +1,5 @@
 package functions;
-
-public abstract class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
     @Override
     public void insert(double x, double y) {
         if (count == 0){
@@ -30,7 +29,6 @@ public abstract class LinkedListTabulatedFunction extends AbstractTabulatedFunct
             }
         }
     }
-
     @Override
     public void remove(int index) {
         if(count == 0){
@@ -51,22 +49,18 @@ public abstract class LinkedListTabulatedFunction extends AbstractTabulatedFunct
             count--;
         }
     }
-
     private class Node {
         Node next;
         Node prev;
         double x;
         double y;
     }
-
     Node head;
-
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
         for (int i = 0; i < xValues.length; i++) {
             addNode(xValues[i], yValues[i]);
         }
     }
-
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         if (xFrom > xTo) {
             double temp = xFrom;
@@ -89,7 +83,6 @@ public abstract class LinkedListTabulatedFunction extends AbstractTabulatedFunct
             addNode(xTo, source.apply(xTo));
         }
     }
-
     private void addNode(double x, double y) {
         if (count == 0) {
             head = new Node();
@@ -138,7 +131,6 @@ public abstract class LinkedListTabulatedFunction extends AbstractTabulatedFunct
         }
         return -1;
     }
-
     @Override
     public int indexOfY(double y) {
         for (int i = 0; i < count; i++) {
@@ -148,7 +140,6 @@ public abstract class LinkedListTabulatedFunction extends AbstractTabulatedFunct
         }
         return -1;
     }
-
     @Override
     public int floorIndexOfX(double x){
         if (x > getNode(count - 1).x) return  count - 1;
@@ -167,7 +158,6 @@ public abstract class LinkedListTabulatedFunction extends AbstractTabulatedFunct
         if (count == 1) return getY(0);
         return interpolate(x, getX(0), getX(1), getY(0), getY(1));
     }
-
     @Override
     protected double extrapolateLeft(double x){
         if (count == 1) return getY(0);
