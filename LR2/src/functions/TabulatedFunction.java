@@ -1,4 +1,5 @@
 package functions;
+
 public interface TabulatedFunction extends MathFunction{
     int getCount();
     double getX(int index);

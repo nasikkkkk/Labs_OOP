@@ -1,20 +1,21 @@
 package functions;
+
 public class SimpleIterations implements MathFunction {
-    private final MathFunction func; // Поле для хранения функции
-    // Конструктор, принимающий реализацию MathFunction
-    public SimpleIterations(MathFunction func) {
-        this.func = func;
-    }
     @Override
     public double apply(double x) {
         double tolerance = 1e-6; // Заданная точность
-        double currentResult = x; // Начальное приближение
+        double initialGuess = x; // Начальное приближение
+        double prevResult = initialGuess;
+        double currentResult;
         int maxIterations = 100; // Максимальное число итераций
         int iterations = 0;
+
         do {
-            currentResult = func.apply(currentResult); // Используем переданную функцию с текущим результатом
+            currentResult = (x + prevResult) / 2;
+            prevResult = currentResult;
             iterations++;
-        } while (Math.abs(func.apply(currentResult) - currentResult) > tolerance && iterations < maxIterations);
+        } while (Math.abs(currentResult - prevResult) > tolerance && iterations < maxIterations);
+
         return currentResult;
     }
 }

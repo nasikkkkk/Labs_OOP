@@ -1,4 +1,5 @@
 package functions;
+
 abstract public class AbstractTabulatedFunction implements TabulatedFunction{
     protected int count;
     abstract protected int floorIndexOfX(double x);
@@ -25,4 +26,8 @@ abstract public class AbstractTabulatedFunction implements TabulatedFunction{
         index = floorIndexOfX(x);
         return interpolate(x, index);
     }
+
+    public abstract double getY(double index);
+
+    public abstract double getY();
 }
