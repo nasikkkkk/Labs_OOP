@@ -30,7 +30,11 @@ class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(5.0, function.getY(1), 1e-6);
     }
 
-
+    @Test
+    void remove(){
+        function.remove(0);
+        Assertions.assertEquals(2, function.getCount());
+    }
     // Tests for floorIndexOfX method
     @Test
     void testFloorIndexO() {

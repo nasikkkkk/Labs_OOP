@@ -1,5 +1,5 @@
 package functions;
-//Y- метод Ньютона
+
 public class NewtonMethod implements MathFunction {
     private MathFunction fx;
     private MathFunction dfx;
