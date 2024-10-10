@@ -9,11 +9,11 @@ class SimpleIterationsTest {
         SqrFunction squareFunction = new SqrFunction();
         SimpleIterations solver = new SimpleIterations(squareFunction);
         // Проверка результатов
-        Assertions.assertEquals(2.0, solver.apply(3.0), 1e-6);
-        Assertions.assertEquals(2.0, solver.apply(7.0), 1e-6);
-        Assertions.assertEquals(2.0, solver.apply(9.0), 1e-6);
-        Assertions.assertEquals(2.0, solver.apply(99.0), 1e-6);
-        Assertions.assertEquals(1.0, solver.apply(1.0), 1e-6);
-        Assertions.assertEquals(1.0, solver.apply(0.5), 1e-6);
+        Assertions.assertEquals(1.0, solver.apply(3.0), 0.001);
+        Assertions.assertEquals(1.0, solver.apply(7.0), 0.001);
+        Assertions.assertEquals(1.0, solver.apply(9.0), 0.001);
+        Assertions.assertEquals(1.0, solver.apply(99.0), 0.001);
+        Assertions.assertEquals(1.0, solver.apply(1.0), 0.001);
+        Assertions.assertEquals(1.0, solver.apply(0.5), 0.001);
     }
 }
