@@ -229,23 +229,23 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Override
     public Iterator<Point> iterator() {
         return new Iterator<Point>() {
-            private int index = 0;  // Инициализация индекса для обхода массива
+            private int index = 0;   //индекс для обхода массива
 
             @Override
             public boolean hasNext() {
-                return index < count;  // Проверяем, есть ли еще элементы для обхода
+                return index < count;  // проверяем, есть ли еще элементы для обхода
             }
 
             @Override
             public Point next() {
                 if (!hasNext()) {
-                    throw new NoSuchElementException();  // Исключение при отсутствии элементов
+                    throw new NoSuchElementException();  //  при отсутствии элементов
                 }
-                // Создаем новый объект Point на основе текущих значений x и y
+                //  новый объект Point на основе текущих значений x и y
                 Point currentPoint = new Point(xValues[index], yValues[index]);
-                index++;  // Переход к следующему элементу
+                index++;
 
-                return currentPoint;  // Возвращаем созданный объект Point
+                return currentPoint;  // созданный объект Point
             }
         };
     }
