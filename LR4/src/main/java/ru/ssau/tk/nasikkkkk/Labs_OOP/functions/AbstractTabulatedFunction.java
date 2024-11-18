@@ -23,18 +23,24 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction, Se
         return leftY + ((rightY - leftY) / (rightX - leftX)) * (x - leftX);
     }
 
-    protected static void checkLengthIsTheSame(double[] xValues, double[] yValues){
-        if(xValues.length != yValues.length)
-            throw new DifferentLengthOfArraysException();
-    }
+    protected static void checkLengthIsTheSame(double[] xValues, double[] yValues) {
+        int lengthX = xValues.length;
+        int lengthY = yValues.length;
 
-    protected static void checkSorted(double[] xValues) {
-        for (int i = 0; i < xValues.length - 1; ++i) {
-            if(xValues[i] > xValues[i+1])
-                throw new ArrayIsNotSortedException();
+        if (lengthX != lengthY) {
+            throw new DifferentLengthOfArraysException();
         }
     }
 
+    protected static void checkSorted(double[] xValues) {
+        int length = xValues.length;
+
+        for (int i = 0; i < length - 1; i++) {
+            if (xValues[i] > xValues[i + 1]) {
+                throw new ArrayIsNotSortedException();
+            }
+        }
+    }
     @Override
     public int getCount() {
         return count;
