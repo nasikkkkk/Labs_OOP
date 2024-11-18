@@ -23,15 +23,19 @@ public class TabulatedFunctionOperationService {
     public void setFactory(TabulatedFunctionFactory factory){
         this.factory = factory;
     }
-    public static Point[] asPoints(TabulatedFunction tabulatedFunction){
-        Point[] points = new Point[tabulatedFunction.getCount()];
+    public static Point[] asPoints(TabulatedFunction tabulatedFunction) {
+        int count = tabulatedFunction.getCount();
+        Point[] points = new Point[count];
+
         int i = 0;
-        for(Point point : tabulatedFunction){
-            points[i] = point;
-            ++i;
+        for (Point point : tabulatedFunction) {
+            points[i] = point; 
+            i++;
         }
+
         return points;
     }
+     
      private TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b, BiOperation operation){
      if (a.getCount() != b.getCount()) {
             throw new InconsistentFunctionsException();
