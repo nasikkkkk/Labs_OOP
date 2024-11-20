@@ -7,79 +7,75 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-// Класс, представляющий табулированную функцию на основе связного списка
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removeable, Serializable {
 
     @Serial
-    private static final long serialVersionUID = 84555L; // Уникальный идентификатор для сериализации
+    private static final long serialVersionUID = 84555L; 
 
     // Вложенный класс, представляющий узел связного списка
     private static class Node implements Serializable {
         @Serial
-        private static final long serialVersionUID = 3406965L; // Уникальный идентификатор для сериализации узла
-        public Node prev; // Ссылка на предыдущий узел
-        public Node next; // Ссылка на следующий узел
-        public double x; // Значение x
-        public double y; // Значение y
+        private static final long serialVersionUID = 3406965L;
+        public Node prev; 
+        public Node next; 
+        public double x; 
+        public double y; 
     }
 
-    private Node head; // Голова связного списка
+    private Node head; 
 
-    // Конструктор класса, принимающий массивы значений x и y для создания табулированной функции
+  
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
-        // Проверка, что массивы содержат как минимум два значения
+       
         if (xValues.length < 2 && yValues.length < 2) {
-            throw new IllegalArgumentException(); // Генерация исключения, если условие не выполнено
+            throw new IllegalArgumentException(); 
         }
 
-        // Проверка, что длины массивов x и y совпадают
+    
         checkLengthIsTheSame(xValues, yValues);
-
-        // Проверка, что значения в массиве x отсортированы по возрастанию
         checkSorted(xValues);
 
-        // Проход по всем значениям x и добавление пар (x, y) в связный список
+  
         for (int i = 0; i < xValues.length; ++i) {
-            addNode(xValues[i], yValues[i]); // Добавление узла с координатами (x, y)
+            addNode(xValues[i], yValues[i]);
         }
     }
 
-    // Конструктор класса, принимающий математическую функцию, диапазон x и количество точек
+ 
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        // Проверка, что количество точек больше 1
+  
         if (count < 2) {
-            throw new IllegalArgumentException(); // Генерация исключения, если условие не выполнено
+            throw new IllegalArgumentException();
         }
 
-        // Обмен значений, если xFrom больше xTo, для упрощения дальнейших операций
+    
         if (xFrom > xTo) {
-            double temp = xFrom; // Временная переменная для обмена
-            xFrom = xTo; // Присваиваем xTo в xFrom
-            xTo = temp; // Присваиваем xFrom в xTo
+            double temp = xFrom;
+            xFrom = xTo; 
+            xTo = temp; 
         }
 
         // Проверка на случай, если границы равны
         if (xFrom == xTo) {
-            double y = source.apply(xFrom); // Вычисляем значение функции для xFrom
-            // Добавляем узлы с одинаковыми значениями y, count раз
+            double y = source.apply(xFrom); 
+         
             for (int i = 0; i < count; ++i) {
-                addNode(xFrom, y); // Добавление узла с (xFrom, y)
+                addNode(xFrom, y);
             }
         } else {
-            // Добавляем первый узел с xFrom и соответствующим y
+         
             addNode(xFrom, source.apply(xFrom));
 
             // Вычисляем шаг между значениями
             double step = (xTo - xFrom) / (count - 1);
-            double temp = xFrom + step; // Устанавливаем временное значение для следующего узла
+            double temp = xFrom + step;
 
             // Добавляем промежуточные узлы
             for (int i = 1; i < count - 1; ++i) {
-                addNode(temp, source.apply(temp)); // Добавляем узел с текущим x и вычисленным y
-                temp += step; // Увеличиваем временное значение на шаг
+                addNode(temp, source.apply(temp)); // 
+                temp += step; //
             }
-
-            // Добавляем последний узел с xTo и соответствующим y
+            
             addNode(xTo, source.apply(xTo));
         }
     }
@@ -128,7 +124,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     @Override
     protected int floorIndexOfX(double x) {
         if (x > getNode(count - 1).x) throw new IllegalArgumentException(); // Проверка на выход за пределы справа
-        if (x < getNode(0).x) throw new IllegalArgumentException(); // Проверка на выход за пределы слева
+        if (x < getNode(0).x) throw new IllegalArgumentException();
 
         for (int i = 0; i < count - 1; ++i) {
             if (getNode(i).x <= x) {
@@ -138,7 +134,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             }
         }
 
-        throw new IllegalArgumentException(); // Если подходящий индекс не найден
+        throw new IllegalArgumentException();
     }
 
     protected Node floorNodeOfX(double x) {
@@ -158,14 +154,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     protected double extrapolateLeft(double x) {
-        return interpolate(x, getX(0), getX(1), getY(0), getY(1)); // Экстраполяция слева от границы данных функции
+        return interpolate(x, getX(0), getX(1), getY(0), getY(1)); 
     }
 
     @Override
     protected double extrapolateRight(double x) {
         int k = count - 1;
 
-        return interpolate(x, getX(k - 1), getX(k), getY(k - 1), getY(k)); // Экстраполяция справа от границы данных функции
+        return interpolate(x, getX(k - 1), getX(k), getY(k - 1), getY(k)); 
     }
 
     @Override
@@ -176,10 +172,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
         double leftX = getX(floorIndex);
         double leftY = getY(floorIndex);
-        double rightX = getX(floorIndex + 1); // Соседняя точка по x
-        double rightY = getY(floorIndex + 1); // Соседняя точка по y
+        double rightX = getX(floorIndex + 1);
+        double rightY = getY(floorIndex + 1);
 
-        return interpolate(x, leftX, rightX, leftY, rightY); // Интерполяция между двумя соседними точками
+        return interpolate(x, leftX, rightX, leftY, rightY);
     }
 
     protected double interpolate(double x, Node floorNode) {
@@ -189,28 +185,28 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
         double leftX = floorNode.x;
         double leftY = floorNode.y;
-        double rightX = floorNode.next.x; // Соседняя точка по x
-        double rightY = floorNode.next.y; // Соседняя точка по y
+        double rightX = floorNode.next.x; 
+        double rightY = floorNode.next.y; 
 
-        return interpolate(x, leftX, rightX, leftY, rightY); // Интерполяция между двумя соседними точками через узел
+        return interpolate(x, leftX, rightX, leftY, rightY);
     }
 
     @Override
     public double apply(double x) {
-        // Если значение меньше левой границы данных функции:
+       
         if (x < getX(0)) {
             return extrapolateLeft(x);
         }
-        // Если значение больше правой границы данных функции:
+      
         if (x > getX(getCount() - 1)) {
             return extrapolateRight(x);
         }
-        // Проверяем наличие значения в таблице:
+        
         int index = indexOfX(x);
         if (index != -1) {
             return getY(index);
         }
-        // Если значения нет в таблице:
+      
         Node nodeEl = floorNodeOfX(x);
         return interpolate(x, nodeEl);
     }
