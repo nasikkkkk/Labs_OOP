@@ -66,12 +66,15 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction, Se
         return interpolate(x, index);
     }
     @Override
-    public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append(getClass().getName()).append(" size = ").append(getCount()).append('\n');
-        for (Point point: this){
-            str.append('[').append(point.x).append(", ").append(point.y).append(']').append('\n');
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getClass().getSimpleName()).append(" size = ").append(getCount()).append("\n");
+
+        for (Point point : this) {
+            builder.append("[").append(point.x).append("; ").append(point.y).append("]\n");
         }
-        return str.toString();
+
+        return builder.toString().trim();
     }
+}
 }
