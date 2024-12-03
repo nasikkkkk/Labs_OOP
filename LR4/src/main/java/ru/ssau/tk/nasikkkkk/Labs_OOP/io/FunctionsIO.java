@@ -14,55 +14,64 @@ final public class FunctionsIO {
     private FunctionsIO(){
         throw new UnsupportedOperationException();
     }
-    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function){
-         // Создаем PrintWriter, оборачивая переданный BufferedWriter
+    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) throws IOException {
         PrintWriter printWriter = new PrintWriter(writer);
-        // Получаем количество точек в функции
-        int count = function.getCount();
-        // Записываем количество точек в первой строке
-        printWriter.println(count);
-        // Перебираем точки функции и записываем каждую из них
-        for (Point point : function) {  // Предполагается, что TabulatedFunction реализует Iterable<Point>
-            double x = point.x; // Получаем x
-            double y = point.y; // Получаем y
-            printWriter.printf("%f %f%n", x, y); // Записываем в формате "x y"
+
+        printWriter.println(function.getCount());
+
+
+        for (Point point : function) {
+            printWriter.printf("%f %f%n", point.x, point.y);
         }
-        // Пробрасываем данные из буфера
+
+        // Пробрасываем данные из буфера в поток
         printWriter.flush();
     }
     public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
         try (DataOutputStream dataOutputStream = new DataOutputStream(outputStream)) {
             int count = function.getCount();
-            dataOutputStream.writeInt(count);  // Записываем количество точек
+            dataOutputStream.writeInt(count);  
 
             for (Point point : function) {
-                writePoint(dataOutputStream, point);  // Записываем каждую точку
+                writePoint(dataOutputStream, point);  
             }
         }
     }
 
-    // Вспомогательный метод для записи точки
+    // вспомогательный метод для записи точки
     private static void writePoint(DataOutputStream dataOutputStream, Point point) throws IOException {
         dataOutputStream.writeDouble(point.x);
         dataOutputStream.writeDouble(point.y);
     }
-    public static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
-        int count = readCount(reader);
+   public static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
+        String countLine = reader.readLine();
+        int count = Integer.parseInt(countLine);
+
         double[] xValues = new double[count];
         double[] yValues = new double[count];
-        NumberFormat numberFormatter = NumberFormat.getInstance(Locale.forLanguageTag("ru"));
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.forLanguageTag("ru"));
 
+        // Чтение точек функции
         for (int i = 0; i < count; i++) {
             String line = reader.readLine();
-            parseLine(line, numberFormatter, xValues, yValues, i);
+            String[] parts = line.split(" ");
+
+
+            try {
+                xValues[i] = numberFormat.parse(parts[0]).doubleValue();
+                yValues[i] = numberFormat.parse(parts[1]).doubleValue();
+            } catch (ParseException e) {
+                throw new IOException();
+            }
         }
+
 
         return factory.create(xValues, yValues);
     }
 
     private static int readCount(BufferedReader reader) throws IOException {
         String firstLine = reader.readLine();
-        return Integer.parseInt(firstLine);  // Читаем количество точек
+        return Integer.parseInt(firstLine);  // читаем количество точек
     }
 
     private static void parseLine(String line, NumberFormat numberFormatter, double[] xValues, double[] yValues, int index) throws IOException {
@@ -85,13 +94,14 @@ final public class FunctionsIO {
         }
         return factory.create(xValues, yValues);
     }
-    public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
-        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream)) {
-            objectOutputStream.writeObject(function); // Сериализация объекта функции
-            objectOutputStream.flush(); // Пробрасываем данные из буфера
-        } catch (IOException e) {
-            throw new IOException(); // Обработка исключения
+    public static void serialize(BufferedOutputStream stream, TabulatedFunction function)
+            throws IOException
+    {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream))
+        {
+            objectOutputStream.writeObject(function);
         }
+        stream.flush();
     }
     public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(stream);
