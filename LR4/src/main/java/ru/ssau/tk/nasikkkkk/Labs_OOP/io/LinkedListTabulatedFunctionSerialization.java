@@ -2,42 +2,41 @@ package ru.ssau.tk.nasikkkkk.Labs_OOP.io;
 
 import ru.ssau.tk.nasikkkkk.Labs_OOP.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.nasikkkkk.Labs_OOP.functions.TabulatedFunction;
+import ru.ssau.tk.nasikkkkk.Labs_OOP.functions.factory.LinkedListTabulatedFunctionFactory;
+import ru.ssau.tk.nasikkkkk.Labs_OOP.functions.factory.TabulatedFunctionFactory;
 import ru.ssau.tk.nasikkkkk.Labs_OOP.operations.TabulatedDifferentialOperator;
 
 import java.io.*;
 
+
 public class LinkedListTabulatedFunctionSerialization {
-
     public static void main(String[] args) {
-        String path = "output/serialized_linked_list_functions.bin";
 
-        // Создание исходной функции с использованием простого массива значений
-        double[] xValues = {0, 2.5, 5, 7.5, 10};
-        double[] yValues = {0, 6.25, 25, 56.25, 100}; // Пример значений для функции y = x^2
+        try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("output/linked_list_function.bin"))) {
+            double[] xValues = {1, 2, 3, 4, 5};
+            double[] yValues = {1, 4, 9, 16, 25};
 
-        LinkedListTabulatedFunction originalFunction = new LinkedListTabulatedFunction(xValues, yValues);
-        TabulatedFunction firstDerivative = new TabulatedDifferentialOperator().derive(originalFunction);
-        TabulatedFunction secondDerivative = new TabulatedDifferentialOperator().derive(firstDerivative);
+            TabulatedFunction function = new LinkedListTabulatedFunction(xValues, yValues);
+            TabulatedFunctionFactory factory = new LinkedListTabulatedFunctionFactory();
+            TabulatedDifferentialOperator operator = new TabulatedDifferentialOperator(factory);
 
-        try (FileOutputStream fileOutputStream = new FileOutputStream(path);
-             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream)) {
-            FunctionsIO.serialize(bufferedOutputStream, originalFunction);
-            FunctionsIO.serialize(bufferedOutputStream, firstDerivative);
-            FunctionsIO.serialize(bufferedOutputStream, secondDerivative);
-        } catch (IOException e) {
+            TabulatedFunction Derive1 = operator.derive(function);
+            TabulatedFunction Derive2 = operator.derive(Derive1);
+
+            FunctionsIO.serialize(out, function);
+            FunctionsIO.serialize(out, Derive1);
+            FunctionsIO.serialize(out, Derive2);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
-        try (FileInputStream fileInputStream = new FileInputStream(path);
-             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
-            TabulatedFunction deserializedOriginalFunction = FunctionsIO.deserialize(bufferedInputStream);
-            TabulatedFunction deserializedFirstDerivative = FunctionsIO.deserialize(bufferedInputStream);
-            TabulatedFunction deserializedSecondDerivative = FunctionsIO.deserialize(bufferedInputStream);
-
-            System.out.println(deserializedOriginalFunction.toString());
-            System.out.println(deserializedFirstDerivative.toString());
-            System.out.println(deserializedSecondDerivative.toString());
-        } catch (IOException | ClassNotFoundException e) {
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream("output/linked_list_function.bin"))) {
+            System.out.println("Функция - " + FunctionsIO.deserialize(in));
+            System.out.println("Первая производная - " + FunctionsIO.deserialize(in));
+            System.out.println("Вторая производная - " + FunctionsIO.deserialize(in));
+        }
+        catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
